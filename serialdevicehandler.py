@@ -17,3 +17,13 @@ class SerialDeviceHandler(object):
 
         self.total_rx = int(0)
         self.total_tx = int(0)
+
+    
+    def __open__(self) -> int:
+        """ open port """
+
+        if not self.is_open:
+            self.serial_interface.open()
+            self.is_open = True
+            return 1
+        return 0

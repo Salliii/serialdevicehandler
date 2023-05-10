@@ -27,3 +27,30 @@ class SerialDeviceHandler(object):
             self.is_open = True
             return 1
         return 0
+    
+
+    def __close__(self) -> int:
+        """ close port """
+
+        if self.is_open:
+            self.serial_interface.close()
+            self.is_open = False
+            return 1
+        return 0
+    
+
+    def __readline__(self) -> bytes:
+        """ read line """
+
+        linebuffer = bytes()
+
+        while len(linebuffer.decode("unicode-escape").split(self.eol_delimiter)) == 1:
+            byte_in = self.serial_interface.read()
+
+            if byte_in == b"":
+                break
+
+            linebuffer += byte_in
+            self.total_rx += len(byte_in)
+
+        return linebuffer

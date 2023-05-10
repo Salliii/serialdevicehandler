@@ -14,3 +14,6 @@ class SerialDeviceHandler(object):
         self.is_open = bool()
         self.is_executing = bool()
         self.eol_delimiter = str("\n")
+
+        self.total_rx = int(0)
+        self.total_tx = int(0)

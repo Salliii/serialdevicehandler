@@ -56,6 +56,22 @@ class SerialDeviceHandler(object):
         return linebuffer
     
 
+    def __process_buffer__(self) -> str:
+        """ process buffer and return it """
+
+        buffer = self.buffer
+
+        self.buffer = ""
+
+        lined_buffer = buffer.split("\n")
+
+        buffer = "\r\n".join(lined_buffer[:-1])
+
+        buffer = "\n".join(buffer.split("\x1bE"))
+
+        return buffer
+    
+
     def __execution_finished__(self) -> bool:
         """ return if execution finished """
 

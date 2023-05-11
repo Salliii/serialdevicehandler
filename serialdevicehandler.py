@@ -56,6 +56,36 @@ class SerialDeviceHandler(object):
         return linebuffer
     
 
+    def __read__(self, stdout: bool) -> str:
+        """ get serial response, process and return it """
+
+        last_chance = False
+
+        while self.is_executing:
+            line_in = self.__readline__()
+
+            if line_in == b"":
+                if not last_chance:
+                    last_chance = True
+                    self.serial_interface.write("\n".encode())
+                else:
+                    return
+
+            else:
+                last_chance = False
+
+                self.buffer += line_in.decode("unicode-escape")
+
+                if self.__execution_finished__():
+                    self.is_executing = False
+
+                    buffer = self.__process_buffer__()
+                    return buffer
+
+                if stdout:
+                    print(line_in.decode("unicode-escape"), end="")
+    
+
     def __process_buffer__(self) -> str:
         """ process buffer and return it """
 

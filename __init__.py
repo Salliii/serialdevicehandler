@@ -1,1 +1,1 @@
-from serialdevicehandler import SerialDeviceHandler
+from .main import SerialDeviceHandler

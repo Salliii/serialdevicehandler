@@ -108,3 +108,25 @@ class SerialDeviceHandler(object):
         if self.buffer.split("\r\n")[-1] != "":
             return True
         return False
+    
+
+    def execute(self, command: str, pseudo=False, stdout=False) -> str:
+        """ executes the given command and returns the serial response """
+
+        self.__open__()
+
+        self.is_executing = True
+
+        while self.is_executing:
+            if not pseudo:
+                for char in command:
+                    self.serial_interface.write(str(char).encode())
+                    self.total_tx += len(char)
+            
+            self.serial_interface.write("\n".encode())
+            self.total_tx += 1
+
+            output = self.__read__(stdout)
+        
+        self.__close__()
+        return output

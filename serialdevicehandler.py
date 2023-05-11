@@ -2,7 +2,7 @@ import serial
 import os
 
 
-class SerialDeviceHandler(object):    
+class SerialDeviceHandler(object):
     def __init__(self, port=None, baudrate=None, timeout=None) -> None:
 
         self.serial_interface = serial.Serial()
@@ -40,7 +40,7 @@ class SerialDeviceHandler(object):
     
 
     def __readline__(self) -> bytes:
-        """ read line """
+        """ read lines """
 
         linebuffer = bytes()
 
@@ -54,3 +54,11 @@ class SerialDeviceHandler(object):
             self.total_rx += len(byte_in)
 
         return linebuffer
+    
+
+    def __execution_finished__(self) -> bool:
+        """ return if execution finished """
+
+        if self.buffer.split("\r\n")[-1] != "":
+            return True
+        return False

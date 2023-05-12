@@ -75,7 +75,7 @@ class SerialDeviceHandler(object):
         linebuffer = bytes()
 
         # loop until the buffer is splittable by the eol delimiter
-        while len(linebuffer.decode("unicode-escape").split(self.eol_delimiter)) == 1:
+        while len(linebuffer.decode("unicode-escape", errors="replace").split(self.eol_delimiter)) == 1:
 
             # read
             byte_in = self.serial_interface.read()

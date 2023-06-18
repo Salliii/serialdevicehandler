@@ -5,6 +5,7 @@
 Execute commands on a device via serial port.
 
 
+<br>
 
 
 ## Installing
@@ -17,6 +18,7 @@ pip install serialdevicehandler
 or install it from <a href="https://pypi.org/project/serialdevicehandler/#files">PyPi</a>
 
 
+<br>
 
 
 ## Example
@@ -31,6 +33,7 @@ print(output)
 ```
 
 
+<br>
 
 
 ## SerialDeviceHandler()
@@ -58,6 +61,7 @@ There are some attributes for statistical and other purposes.
 | `total_tx`      | stores the total bytes transmitted | `int` |
 
 
+<br>
 
 
 ### SerialDeviceHandler.execute()
@@ -76,6 +80,7 @@ device.execute(command, pseudo, stdout)
 | `stdout`  | Live output while the command is running | `bool` | False |
 
 
+<br>
 
 
 ## Summary

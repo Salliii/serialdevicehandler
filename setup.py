@@ -26,5 +26,5 @@ setuptools.setup(
     python .\setup.py sdist bdist_wheel
 
     Upload to PyPi:
-    twine upload .\dist\*
+    twine upload .\dist\<pack-name>-<version>
 """

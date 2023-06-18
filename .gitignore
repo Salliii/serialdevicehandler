@@ -1,4 +1,4 @@
 build/
-conlay.egg-info/
+*.egg-info/
 dist/
 __pycache__/

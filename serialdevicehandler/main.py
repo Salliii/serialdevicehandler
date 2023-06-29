@@ -3,12 +3,12 @@ import os
 
 
 class SerialDeviceHandler(object):
-    def __init__(self, port=None, baudrate=None, timeout=None) -> None:
+    def __init__(self, port="COM1", baudrate="9600", timeout=0.2) -> None:
 
         self.serial_interface = serial.Serial()
-        self.serial_interface.port = str( port if port != None else ("COM1" if os.name == "nt" else "/dev/tty") )
-        self.serial_interface.baudrate = str( baudrate if baudrate != None else "9600" )
-        self.serial_interface.timeout = float( max(timeout, 0.2) if timeout != None else 0.2 )
+        self.serial_interface.port = port
+        self.serial_interface.baudrate = baudrate
+        self.serial_interface.timeout = max(timeout, 0.2)
 
         self.buffer = str()
         self.is_open = bool()
@@ -91,7 +91,7 @@ class SerialDeviceHandler(object):
         return linebuffer
     
 
-    def __read__(self, stdout: bool) -> str:
+    def __read__(self, live_out: bool) -> str:
         """ get serial response, process and return it """
 
         last_chance = False
@@ -127,12 +127,14 @@ class SerialDeviceHandler(object):
                     return buffer
 
                 # print out
-                if stdout:
+                if live_out:
                     print(line_in.decode("unicode-escape"), end="")
     
 
-    def execute(self, command: str, pseudo=False, stdout=False) -> str:
+    def execute(self, command: str, live_out=False, write_only=False, read_only=False) -> str:
         """ executes the given command and returns the serial response """
+
+        output = None
 
         # open port
         self.__open__()
@@ -144,17 +146,20 @@ class SerialDeviceHandler(object):
         while self.is_executing:
 
             # write command
-            if not pseudo:
+            if not read_only:
                 for char in command:
                     self.serial_interface.write(str(char).encode())
                     self.total_tx += len(char)
-            
+                    if write_only:
+                        self.is_executing = False
+
             # execute
             self.serial_interface.write("\n".encode())
             self.total_tx += 1
 
             # start reading
-            output = self.__read__(stdout)
+            if not write_only:
+                output = self.__read__(live_out)
         
         # close port
         self.__close__()

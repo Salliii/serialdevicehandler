@@ -47,18 +47,18 @@ device = SerialDeviceHandler(port, baudrate, timeout)
 
 | argument | description | expected type | default value |
 | :------- | :---------- | :------------ | :------------ |
-| `port`      | Specifies the device port | `str` | Windows: `COM1`  Linux: `/dev/tty` |
+| `port`      | Specifies the device port | `str` | COM1 |
 | `baudrate`  | Specifies the device baudrate | `str` | 9600 |
 | `timeout`   | Specifies the command timeout | `int` | 0.2s |
 
 There are some attributes for statistical and other purposes.
 
-| attribute | description | expected type |
-| :-------- | :---------- | :------------ |
-| `is_open`       | Indicates whether the serial port is open | `bool` |
-| `eol_delimiter` | defines the end-of-line separator for line reading | `int` |
-| `total_rx`      | stores the total bytes received | `int` |
-| `total_tx`      | stores the total bytes transmitted | `int` |
+| attribute | description | expected type | default value |
+| :-------- | :---------- | :------------ | :------------ |
+| `is_open`       | Indicates whether the serial port is open | `bool` | False |
+| `eol_delimiter` | defines the end-of-line separator for line reading | `str` | \n |
+| `total_rx`      | stores the total bytes received | `int` | 0 |
+| `total_tx`      | stores the total bytes transmitted | `int` | 0 |
 
 
 <br>
@@ -70,14 +70,15 @@ Use the `execute()` function to run a command.
 Syntax:
 
 ```python
-device.execute(command, pseudo, stdout)
+device.execute(command, <optional arguments>)
 ```
 
 | argument | description | expected type | default value |
 | :------- | :---------- | :------------ | :------------ |
 | `command` | Defines the command to be executed | `str` | n/a |
-| `pseudo`  | Execute as a pseudo command. No command is executed. Use it to capture bootups, etc. | `bool` | False |
 | `stdout`  | Live output while the command is running | `bool` | False |
+| `read_only` | read only execution | bool | False
+| `write_only` | write only execution | bool | False
 
 
 <br>
